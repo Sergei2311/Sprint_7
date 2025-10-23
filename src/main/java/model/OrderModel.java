@@ -1,8 +1,13 @@
 package model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.List;
 
+//@Data
+//@AllArgsConstructor
 public class OrderModel {
     private String firstName;
     private String lastName;
@@ -90,11 +95,4 @@ public class OrderModel {
         this.comment = comment;
     }
 
-    public List<String> getColor() {
-        return color;
-    }
-
-    public void setColor(List<String> color) {
-        this.color = color;
-    }
 }

@@ -8,6 +8,7 @@ import org.junit.runners.Parameterized;
 import static actions.ActionCreateCourier.createCourier;
 import static data.TestData.*;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.apache.http.HttpStatus.*;
 
 @RunWith(Parameterized.class)
 public class CreateCourierCheckFieldTest extends BaseTest {
@@ -38,7 +39,7 @@ public class CreateCourierCheckFieldTest extends BaseTest {
 
         createCourier(courier)
                 .then()
-                .statusCode(400)
+                .statusCode(SC_BAD_REQUEST)
                 .assertThat().body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 

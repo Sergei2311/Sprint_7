@@ -6,6 +6,7 @@ import org.junit.Test;
 import static actions.ActionCreateCourier.createCourier;
 import static data.TestData.*;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.apache.http.HttpStatus.*;
 
 public class CreateCourierTest extends BaseTest {
 
@@ -19,7 +20,7 @@ public class CreateCourierTest extends BaseTest {
 
     createCourier(this.courier)
                 .then()
-                .statusCode(201)
+                .statusCode(SC_CREATED)
                 .body("ok", equalTo(true));
 
     }

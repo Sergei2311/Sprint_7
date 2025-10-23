@@ -1,10 +1,12 @@
 package model;
 
+import lombok.Data;
 
+@Data
 public class CourierModel {
-    private String login;
-    private String password;
-    private String firstName;
+    private final String login;
+    private final String password;
+    private final String firstName;
 
     public CourierModel(String login, String password, String firstName) {
         this.login = login;
@@ -12,30 +14,4 @@ public class CourierModel {
         this.firstName = firstName;
     }
 
-    public CourierModel() {
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 }

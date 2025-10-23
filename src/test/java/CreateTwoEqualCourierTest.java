@@ -6,6 +6,7 @@ import org.junit.Test;
 import static actions.ActionCreateCourier.createCourier;
 import static data.TestData.*;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.apache.http.HttpStatus.*;
 
 public class CreateTwoEqualCourierTest extends BaseTest {
 
@@ -18,7 +19,7 @@ public class CreateTwoEqualCourierTest extends BaseTest {
     createCourier(courier);
     createCourier(courier)
                 .then()
-                .statusCode(409)
+                .statusCode(SC_CONFLICT)
                 .assertThat().body("message", equalTo("Этот логин уже используется"));
     }
 

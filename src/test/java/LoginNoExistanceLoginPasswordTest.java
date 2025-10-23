@@ -1,21 +1,18 @@
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import model.CourierModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static data.TestData.*;
-import static data.TestData.BASEURL;
-import static data.TestData.COURIER_LOGIN;
-import static data.TestData.FIRSTNAME;
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(Parameterized.class)
-public class LoginNoExistanceLoginPasswordTest {
+public class LoginNoExistanceLoginPasswordTest extends BaseTestWithCourier {
     private final String login;
     private final String password;
     private final String firstName;
@@ -41,7 +38,7 @@ public class LoginNoExistanceLoginPasswordTest {
     public void checkLogin() {
         CourierModel courier = new CourierModel(login, password, firstName);
 
-        Response logResponse = given()
+        given()
                 .log().all()
                 .baseUri(BASEURL)
                 .contentType(ContentType.JSON)
@@ -49,7 +46,7 @@ public class LoginNoExistanceLoginPasswordTest {
                 .when()
                 .post(COURIER_LOGIN)
                 .then()
-                .statusCode(404)
+                .statusCode(SC_NOT_FOUND)
                 .assertThat().body("message", equalTo("Учетная запись не найдена"))
                 .extract()
                 .response();

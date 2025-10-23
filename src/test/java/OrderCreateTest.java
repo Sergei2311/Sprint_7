@@ -1,7 +1,6 @@
 import data.BaseTestOrder;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.http.ContentType;
 import model.OrderModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +9,8 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.List;
 
-import static data.TestData.ORDERCREATE;
-import static io.restassured.RestAssured.given;
+import static actions.ActionCreateOrder.createNewOrder;
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 @RunWith(Parameterized.class)
@@ -42,27 +41,21 @@ public class OrderCreateTest extends BaseTestOrder {
     public static Object[][] createOrder() {
         return new Object[][]{
                 {"Иван", "Иванов", "Мира,16", "Черкизовская", "89002223311", 2, "2020-10-25", "comment", Arrays.asList("BLACK")},
-        {"Иван", "Иванов", "Мира,16", "Черкизовская", "89002223311", 2, "2020-10-25", "comment",Arrays.asList("GRAY")},
-        {"Иван", "Иванов", "Мира,16", "Черкизовская", "89002223311", 2, "2020-10-25", "comment",Arrays.asList("BLACK", "GRAY")},
-        {"Иван", "Иванов", "Мира,16", "Черкизовская", "89002223311", 2, "2020-10-25", "comment",Arrays.asList()}
+                {"Иван", "Иванов", "Мира,16", "Черкизовская", "89002223311", 2, "2020-10-25", "comment", Arrays.asList("GRAY")},
+                {"Иван", "Иванов", "Мира,16", "Черкизовская", "89002223311", 2, "2020-10-25", "comment", Arrays.asList("BLACK", "GRAY")},
+                {"Иван", "Иванов", "Мира,16", "Черкизовская", "89002223311", 2, "2020-10-25", "comment", Arrays.asList()}
         };
     }
 
     @Test
     @DisplayName("Creating an order with two colors")
     @Step("Проверка заказа с разными цветами")
-    public void createOrderTest(){
+    public void createOrderTest() {
         OrderModel order = new OrderModel(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
 
-        given()
-                .log().all()
-                .contentType(ContentType.JSON)
-                .body(order)
-                .when()
-                .post(ORDERCREATE)
+        createNewOrder(order)
                 .then()
-                .log().all()
-                .statusCode(201)
+                .statusCode(SC_CREATED)
                 .body("track", notNullValue());
     }
 

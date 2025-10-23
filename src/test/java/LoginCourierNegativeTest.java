@@ -10,9 +10,10 @@ import org.junit.runners.Parameterized;
 import static data.TestData.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.apache.http.HttpStatus.*;
 
 @RunWith(Parameterized.class)
-public class LoginCourierNegativeTest {
+public class LoginCourierNegativeTest extends BaseTestWithCourier{
     private final String login;
     private final String password;
     private final String firstName;
@@ -34,7 +35,7 @@ public class LoginCourierNegativeTest {
 
     @Test
     @DisplayName("Checking required fields for authorization")
-    @Step("Создание одинаковых курьеров")
+    @Step("Негативный тест. Нельзя залогиниться при отсутствии логина или пароля")
     public void checkLogin() {
         CourierModel courier = new CourierModel(login, password, firstName);
 
@@ -46,7 +47,7 @@ public class LoginCourierNegativeTest {
                 .when()
                 .post(COURIER_LOGIN)
                 .then()
-                .statusCode(400)
+                .statusCode(SC_BAD_REQUEST)
                 .assertThat().body("message", equalTo("Недостаточно данных для входа"))
                 .extract()
                 .response();
