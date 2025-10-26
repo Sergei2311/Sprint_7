@@ -1,24 +1,23 @@
 package actions;
 
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import model.OrderModel;
 
+import static dataApi.DataApi.ORDERCREATE;
 import static io.restassured.RestAssured.given;
 
 public class ActionCreateOrder {
-    public static final String ORDERCREATE = "/api/v1/orders";
 
+    @Step("Создание нового заказа")
     public static Response createNewOrder(OrderModel orderModel) {
         return given()
                 .log().all()
                 .contentType(ContentType.JSON)
                 .body(orderModel)
                 .when()
-                .post(ORDERCREATE)
-                .then()
-                .log().all()
-                .extract().response();
+                .post(ORDERCREATE);
 
     }
 

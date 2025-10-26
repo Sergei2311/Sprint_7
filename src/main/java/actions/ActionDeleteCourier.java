@@ -4,10 +4,10 @@ import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import static dataApi.DataApi.COURIER_DELETE;
 import static io.restassured.RestAssured.given;
 
 public class ActionDeleteCourier {
-    public static final String COURIER_DELETE = "/api/v1/courier/%s";
 
     @Step("Удаление курьера")
     public static Response courierApiDelete(String courierID) {

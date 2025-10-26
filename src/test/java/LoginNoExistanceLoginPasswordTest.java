@@ -1,13 +1,12 @@
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.http.ContentType;
 import model.CourierModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static actions.CourierStepLogin.loginCourier;
 import static data.TestData.*;
-import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -38,13 +37,7 @@ public class LoginNoExistanceLoginPasswordTest extends BaseTestWithCourier {
     public void checkLogin() {
         CourierModel courier = new CourierModel(login, password, firstName);
 
-        given()
-                .log().all()
-                .baseUri(BASEURL)
-                .contentType(ContentType.JSON)
-                .body(courier)
-                .when()
-                .post(COURIER_LOGIN)
+        loginCourier(courier)
                 .then()
                 .statusCode(SC_NOT_FOUND)
                 .assertThat().body("message", equalTo("Учетная запись не найдена"))

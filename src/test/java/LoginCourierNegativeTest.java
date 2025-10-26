@@ -1,19 +1,17 @@
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import model.CourierModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static actions.CourierStepLogin.loginCourier;
 import static data.TestData.*;
-import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.apache.http.HttpStatus.*;
 
 @RunWith(Parameterized.class)
-public class LoginCourierNegativeTest extends BaseTestWithCourier{
+public class LoginCourierNegativeTest extends BaseTestWithCourier {
     private final String login;
     private final String password;
     private final String firstName;
@@ -39,18 +37,13 @@ public class LoginCourierNegativeTest extends BaseTestWithCourier{
     public void checkLogin() {
         CourierModel courier = new CourierModel(login, password, firstName);
 
-        Response logResponse = given()
-                .log().all()
-                .baseUri(BASEURL)
-                .contentType(ContentType.JSON)
-                .body(courier)
-                .when()
-                .post(COURIER_LOGIN)
+        loginCourier(courier)
                 .then()
                 .statusCode(SC_BAD_REQUEST)
                 .assertThat().body("message", equalTo("Недостаточно данных для входа"))
                 .extract()
                 .response();
+        ;
     }
 
 }
